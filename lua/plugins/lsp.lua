@@ -81,22 +81,6 @@ return {
 
     local lspconfig = require("lspconfig")
 
-    lspconfig.lua_ls.setup({
-      settings = {
-        Lua = {
-          runtime = { version = "LuaJIT" },
-          diagnostics = {
-            globals = { "vim" },
-          },
-          workspace = {
-            library = vim.api.nvim_get_runtime_file("", true),
-            checkThirdParty = false,
-          },
-          telemetry = { enable = false },
-        },
-      },
-    })
-
     require("mason").setup()
     require("mason-lspconfig").setup({
       handlers = {
@@ -149,6 +133,23 @@ return {
                   typescriptreact = "typescriptreact",
                   html = "html",
                 },
+              },
+            },
+          })
+        end,
+
+        ["lua_ls"] = function()
+          lspconfig.lua_ls.setup({
+            settings = {
+              Lua = {
+                runtime = { version = "LuaJIT" },
+                diagnostics = {
+                  globals = { "vim", "require" },
+                },
+                workspace = {
+                  library = vim.api.nvim_get_runtime_file("", true),
+                },
+                telemetry = { enable = false },
               },
             },
           })
