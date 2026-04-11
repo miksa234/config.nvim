@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
   "lervag/vimtex",
   lazy = false,
@@ -24,6 +25,5 @@ return {
 
     vim.keymap.set('n', '<leader>tp', "<Esc>:w<CR>:VimtexCompile<CR>")
     vim.keymap.set('n', '<leader>te', "<Esc>:w<CR>:VimtexErrors<CR>")
-
   end
 }

@@ -1,9 +1,10 @@
+---@diagnostic disable: undefined-global
 return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
-  config = function ()
+  config = function()
     require("nvim-treesitter").setup({
---    ensure_installed = "none",
+      --    ensure_installed = "none",
       auto_install = true,
       indent = {
         enable = true
@@ -11,8 +12,8 @@ return {
       highlight = {
         enable = true,
         disable = function(lang, buf)
-          local langs = { "latex", "html" , "markdown", "text"}
-          for i=1,#langs do
+          local langs = { "latex", "html", "markdown", "text" }
+          for i = 1, #langs do
             if lang == langs[i] then
               return true
             end
@@ -24,12 +25,12 @@ return {
             vim.notify(
               "File larger than 100KB treesitter disabled for performance",
               vim.log.levels.WARN,
-              {title = "Treesitter"}
+              { title = "Treesitter" }
             )
             return true
           end
         end,
-        additional_vim_regex_highlighting=false,
+        additional_vim_regex_highlighting = false,
       },
     })
   end

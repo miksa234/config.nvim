@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
   "voldikss/vim-floaterm",
   config = function()

@@ -1,4 +1,4 @@
-
+---@diagnostic disable: undefined-global
 local palette = {
   err = "#51202A",
   warn = "#3B3B1B",
@@ -61,7 +61,22 @@ local diagnostic_goto = function(next, severity)
   end
 end
 
-map = vim.keymap.set
+local map = vim.keymap.set
+
+map("n", "<leader>h", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+  vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
+  vim.notify("Inlay hints " .. (enabled and "OFF" or "ON"))
+end, { silent = true, desc = "Toggle inlay hints" })
+
+map("n", "<leader>d", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local enabled = vim.diagnostic.is_enabled({ bufnr = bufnr })
+  vim.diagnostic.enable(not enabled, { bufnr = bufnr })
+  vim.notify("Diagnostics " .. (enabled and "OFF" or "ON"))
+end, { silent = true, desc = "Toggle diagnostics" })
+
 map("n", "<C-w>d", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
 map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })

@@ -1,4 +1,3 @@
--- lua/plugins/rustacean.lua
 ---@diagnostic disable: undefined-global
 return {
   "mrcjkb/rustaceanvim",

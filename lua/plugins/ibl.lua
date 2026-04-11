@@ -1,10 +1,10 @@
 return {
-  'lukas-reineke/indent-blankline.nvim',
-  main = 'ibl',
-  event = 'VeryLazy',
+  "lukas-reineke/indent-blankline.nvim",
+  main = "ibl",
+  event = "VeryLazy",
   opts = {
     indent = {
-      char = '│'
+      char = "│"
     },
     scope = {
       show_start = false,

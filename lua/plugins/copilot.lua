@@ -3,7 +3,7 @@ return {
   cmd = "Copilot",
   event = "InsertEnter",
   requires = {
-    "copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
+    "copilotlsp-nvim/copilot-lsp",
   },
   config = function()
     require("copilot").setup({

@@ -1,7 +1,8 @@
+---@diagnostic disable: undefined-global
 return {
   "chrisgrieser/nvim-lsp-endhints",
   event = "VeryLazy",
-  config = function ()
+  config = function()
     local endhints = require("lsp-endhints")
     endhints.enable()
     endhints.setup {
@@ -9,7 +10,7 @@ return {
         type = "-> ",
         parameter = "<= ",
         offspec = "<= ", -- hint kind not defined in official LSP spec
-        unknown = "? ", -- hint kind is nil
+        unknown = "? ",  -- hint kind is nil
       },
       label = {
         truncateAtChars = 50,

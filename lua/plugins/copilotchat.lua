@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
   "CopilotC-Nvim/CopilotChat.nvim",
   dependencies = {
@@ -9,18 +10,18 @@ return {
   opts = {
     model = "gpt-5.2",
     window = {
-      layout = 'horizontal',
+      layout = "horizontal",
       width = 1,
       height = 0.3,
-      title = '🤖 AI Assistant',
+      title = "🤖 AI Assistant",
     },
     headers = {
-      user = '👤 You',
-      assistant = '🤖 Copilot',
-      tool = '🔧 Tool',
+      user = "👤 You",
+      assistant = "🤖 Copilot",
+      tool = "🔧 Tool",
     },
     suggestion = { enabled = true },
-    separator = '━━',
+    separator = "━━",
     auto_fold = true,
   },
   config = function(_, opts)

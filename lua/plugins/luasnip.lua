@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
   "L3MON4D3/LuaSnip",
   version = "v2.3.0",
@@ -11,8 +12,5 @@ return {
     for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/snippets/*.lua", true)) do
       loadfile(ft_path)()
     end
-
-
-
   end
 }

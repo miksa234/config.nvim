@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
   "neovim/nvim-lspconfig",
   dependencies = {
@@ -5,19 +6,51 @@ return {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "j-hui/fidget.nvim",
-    "hrsh7th/nvim-cmp",
-    "hrsh7th/cmp-nvim-lsp",
+    "saghen/blink.cmp",
   },
   config = function()
     local map = vim.keymap.set
 
+    local ok_blink, blink = pcall(require, "blink.cmp")
+    if ok_blink then
+      blink.setup({
+        snippets = { preset = "luasnip" },
+        sources = {
+          default = { "lsp", "path", "snippets", "buffer" },
+        },
+      })
+    end
+
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = vim.tbl_deep_extend(
-      "force",
-      capabilities,
-      require("cmp_nvim_lsp").default_capabilities()
-    )
-    require("lspconfig").util.default_config.capabilities = capabilities
+    if ok_blink and type(blink.get_lsp_capabilities) == "function" then
+      capabilities = vim.tbl_deep_extend("force", capabilities, blink.get_lsp_capabilities())
+    end
+
+    local ok_endhints, endhints = pcall(require, "lsp-endhints")
+    if ok_endhints then
+      endhints.setup({
+        icons = {
+          type = "-> ",
+          parameter = "<= ",
+          offspec = "<= ",
+          unknown = "? ",
+        },
+        label = {
+          truncateAtChars = 50,
+          padding = 1,
+          marginLeft = 0,
+          sameKindSeparator = ", ",
+        },
+        extmark = {
+          priority = 50,
+        },
+        autoEnableHints = true,
+      })
+      endhints.enable()
+    end
+
+    local lspconfig = require("lspconfig")
+    lspconfig.util.default_config.capabilities = capabilities
 
     require("conform").setup({
       formatters_by_ft = {
@@ -28,7 +61,7 @@ return {
         vue = { "prettier" },
         css = { "prettier" },
         scss = { "prettier" },
-        lua = { "prettier" },
+        lua = { "stylua" },
         less = { "prettier" },
         html = { "prettier" },
         json = { "prettier" },
@@ -79,7 +112,6 @@ return {
 
     require("fidget").setup({})
 
-    local lspconfig = require("lspconfig")
 
     require("mason").setup()
     require("mason-lspconfig").setup({
