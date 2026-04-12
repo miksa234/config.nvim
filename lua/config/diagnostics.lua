@@ -13,24 +13,22 @@ vim.api.nvim_set_hl(0, "DiagnosticHintLine", { bg = palette.hint, blend = 10 })
 
 vim.api.nvim_set_hl(0, "DapBreakpointSign", { fg = "#FF0000", bg = nil, bold = true })
 vim.fn.sign_define("DapBreakpoint", {
-  text = "●", -- a large dot; change as desired
-  texthl = "DapBreakpointSign", -- the highlight group you just defined
-  linehl = "", -- no full-line highlight
-  numhl = "", -- no number-column highlight
+  text = "●",
+  texthl = "DapBreakpointSign",
+  linehl = "",
+  numhl = "",
 })
 
 local sev = vim.diagnostic.severity
 
 vim.diagnostic.config({
-  -- keep underline & severity_sort on for quick scanning
   underline = true,
   severity_sort = true,
-  update_in_insert = false, -- less flicker
+  update_in_insert = false,
   float = {
     border = "rounded",
     source = true,
   },
-  -- keep signs & virtual text, but tune them as you like
   signs = {
     text = {
       [sev.ERROR] = " ",
@@ -44,7 +42,6 @@ vim.diagnostic.config({
     source = "if_many",
     prefix = "●",
   },
-  -- NEW in 0.11 — dim whole line
   linehl = {
     [sev.ERROR] = "DiagnosticErrorLine",
     [sev.WARN] = "DiagnosticWarnLine",
@@ -53,7 +50,6 @@ vim.diagnostic.config({
   },
 })
 
--- diagnostic keymaps
 local diagnostic_goto = function(next, severity)
   severity = severity and vim.diagnostic.severity[severity] or nil
   return function()
