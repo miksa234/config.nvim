@@ -31,9 +31,9 @@ vim.diagnostic.config({
   },
   signs = {
     text = {
-      [sev.ERROR] = " ",
-      [sev.WARN] = " ",
-      [sev.INFO] = " ",
+      [sev.ERROR] = "E",
+      [sev.WARN] = "W",
+      [sev.INFO] = "I",
       [sev.HINT] = "󰌵 ",
     },
   },

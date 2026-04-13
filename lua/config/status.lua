@@ -4,7 +4,7 @@ local M = {}
 
 local function buf_dir(bufnr)
   local name = vim.api.nvim_buf_get_name(bufnr)
-  if name == '' then
+  if name == '' or name:find('Undo tree', 1, true) then
     return nil
   end
   return vim.fn.fnamemodify(name, ':p:h')
