@@ -73,10 +73,7 @@ return {
         astro = { "prettier" },
         rust = { "rustfmt" },
       },
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
+      format_on_save = false,
     })
 
     vim.api.nvim_create_autocmd("LspAttach", {
