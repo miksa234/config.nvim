@@ -3,10 +3,21 @@
 local M = {}
 
 local function buf_dir(bufnr)
+  local bt = vim.bo[bufnr].buftype
+  if bt ~= nil and bt ~= '' then
+    return nil
+  end
+
   local name = vim.api.nvim_buf_get_name(bufnr)
   if name == '' or name:find('Undo tree', 1, true) then
     return nil
   end
+
+  -- Exclude non-filesystem buffers (URIs like term://, fugitive://, oil://, etc.)
+  if name:match('^%a[%w+.-]*://') then
+    return nil
+  end
+
   return vim.fn.fnamemodify(name, ':p:h')
 end
 
