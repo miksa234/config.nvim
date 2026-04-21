@@ -9,29 +9,35 @@ return {
 
   config = function()
     local previewers = require("telescope.previewers")
-    local _bad = { ".*%.tex", ".*%.md", ".*%.html" }
-    local bad_files = function(filepath)
-      for _, v in ipairs(_bad) do
-        if filepath:match(v) then
-          return false
+    local bad_patterns = { ".*%.tex$", ".*%.md$", ".*%.html$" }
+
+    local is_bad_file = function(filepath)
+      for _, pat in ipairs(bad_patterns) do
+        if filepath:match(pat) then
+          return true
         end
       end
-      return true
-    end
-    local new_maker = function(filepath, bufnr, opts)
-      opts = opts or {}
-      if opts.use_ft_detect == nil then opts.use_ft_detect = true end
-      opts.use_ft_detect = opts.use_ft_detect == false and false or bad_files(filepath)
-      previewers.buffer_previewer_maker(filepath, bufnr, opts)
+      return false
     end
 
+    local new_maker = function(filepath, bufnr, opts)
+      opts = opts or {}
+
+      if is_bad_file(filepath) then
+        vim.bo[bufnr].modifiable = true
+        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "Preview disabled for: " .. filepath })
+        vim.bo[bufnr].modifiable = false
+        return
+      end
+
+      previewers.buffer_previewer_maker(filepath, bufnr, opts)
+    end
 
     local edge_borders = {
       prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
       results = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
       preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
     }
-
 
     require("telescope").setup {
       defaults =
@@ -48,6 +54,7 @@ return {
                   results_width = 0.8,
                 },
               },
+              buffer_previewer_maker = new_maker,
             }
           ),
       extentions = {
@@ -68,14 +75,6 @@ return {
       function()
         builtin.find_files({
           search_dirs = {
-            os.getenv("XDG_CONFIG_HOME") .. "/nvim/lua",
-            os.getenv("XDG_CONFIG_HOME") .. "/nvim/after",
-            os.getenv("XDG_CONFIG_HOME") .. "/zsh",
-            os.getenv("XDG_CONFIG_HOME") .. "/shell",
-            os.getenv("XDG_CONFIG_HOME") .. "/X",
-            os.getenv("XDG_CONFIG_HOME") .. "/X11",
-            os.getenv("XDG_LOCAL_HOME") .. "/src",
-            os.getenv("XDG_LOCAL_HOME") .. "/bin",
             os.getenv("XDG_DOTFILES"),
           },
           hidden = true,
@@ -90,14 +89,6 @@ return {
       function()
         builtin.live_grep({
           search_dirs = {
-            os.getenv("XDG_CONFIG_HOME") .. "/nvim/lua",
-            os.getenv("XDG_CONFIG_HOME") .. "/nvim/after",
-            os.getenv("XDG_CONFIG_HOME") .. "/zsh",
-            os.getenv("XDG_CONFIG_HOME") .. "/shell",
-            os.getenv("XDG_CONFIG_HOME") .. "/X",
-            os.getenv("XDG_CONFIG_HOME") .. "/X11",
-            os.getenv("XDG_LOCAL_HOME") .. "/src",
-            os.getenv("XDG_LOCAL_HOME") .. "/bin",
             os.getenv("XDG_DOTFILES"),
           },
           hidden = true,

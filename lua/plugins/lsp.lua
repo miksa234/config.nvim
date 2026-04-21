@@ -53,6 +53,11 @@ return {
     lspconfig.util.default_config.capabilities = capabilities
 
     require("conform").setup({
+      formatters = {
+        latexindent = {
+          prepend_args = { "-y=defaultIndent:'  '" },
+        },
+      },
       formatters_by_ft = {
         javascript = { "prettier" },
         javascriptreact = { "prettier" },
@@ -72,6 +77,7 @@ return {
         svelte = { "prettier" },
         astro = { "prettier" },
         rust = { "rustfmt" },
+        tex = { "latexindent" },
       },
       format_on_save = false,
     })
