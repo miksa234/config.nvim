@@ -8,31 +8,6 @@ return {
   },
 
   config = function()
-    local previewers = require("telescope.previewers")
-    local bad_patterns = { ".*%.tex$", ".*%.md$", ".*%.html$" }
-
-    local is_bad_file = function(filepath)
-      for _, pat in ipairs(bad_patterns) do
-        if filepath:match(pat) then
-          return true
-        end
-      end
-      return false
-    end
-
-    local new_maker = function(filepath, bufnr, opts)
-      opts = opts or {}
-
-      if is_bad_file(filepath) then
-        vim.bo[bufnr].modifiable = true
-        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "Preview disabled for: " .. filepath })
-        vim.bo[bufnr].modifiable = false
-        return
-      end
-
-      previewers.buffer_previewer_maker(filepath, bufnr, opts)
-    end
-
     local edge_borders = {
       prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
       results = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
