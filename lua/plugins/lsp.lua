@@ -57,6 +57,7 @@ return {
         latexindent = {
           prepend_args = { "-y=defaultIndent:'  '" },
         },
+        rustfmt = { },
       },
       formatters_by_ft = {
         javascript = { "prettier" },
@@ -102,13 +103,14 @@ return {
         map("n", "gs", vim.lsp.buf.signature_help, opts)
 
         map("n", "gq", function()
-          require("conform").format({ async = true, lsp_fallback = true })
+          require("conform").format({
+            async = true,
+            lsp_fallback = true,
+            timeout_ms = 5000,
+          })
         end, opts)
 
         map("n", "<F2>", vim.lsp.buf.rename, opts)
-        map({ "n", "x" }, "<F3>", function()
-          vim.lsp.buf.format({ async = true })
-        end, opts)
         map("n", "<F4>", vim.lsp.buf.code_action, opts)
       end,
     })

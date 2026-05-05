@@ -32,6 +32,7 @@ return {
               loadOutDirsFromCheck = true,
               allFeatures = true,
             },
+            rustfmt = { },
             inlayHints = {
               maxLength = 50,
               renderColons = true,
