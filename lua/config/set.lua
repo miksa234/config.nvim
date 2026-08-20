@@ -16,10 +16,12 @@ vim.opt.textwidth = 80
 vim.opt.wrap = true
 
 vim.opt.ignorecase = true
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.smartindent = true
 vim.opt.smartcase = true
+
+vim.opt.shiftwidth = 0
+vim.opt.softtabstop = -1
+vim.opt.tabstop = 4
+vim.opt.smartindent = true
 vim.opt.expandtab = true
 
 vim.opt.viminfofile = os.getenv("HOME") .. "/.local/state/nvim/viminfo"

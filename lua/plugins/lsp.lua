@@ -67,7 +67,7 @@ return {
         vue = { "prettier" },
         css = { "prettier" },
         scss = { "prettier" },
-        lua = { "stylua" },
+        lua = { "lua_ls" },
         less = { "prettier" },
         html = { "prettier" },
         json = { "prettier" },
