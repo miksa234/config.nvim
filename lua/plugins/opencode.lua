@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 return {
   "sudo-tee/opencode.nvim",
   config = function()
@@ -20,7 +19,7 @@ return {
       "MeanderingProgrammer/render-markdown.nvim",
       opts = {
         anti_conceal = { enabled = false },
-        file_types = { "markdown", "opencode_output" },
+        file_types = { "opencode_output" },
       },
     },
     "saghen/blink.cmp",

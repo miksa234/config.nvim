@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.g.show_whitespace = 1
@@ -23,7 +22,7 @@ vim.opt.expandtab = true
 vim.opt.shadafile = vim.fn.stdpath("state") .. "/shada/main.shada"
 local undodir = vim.fn.stdpath("state") .. "/undo"
 vim.opt.undodir = undodir
-vim.fn.mkdir(undodir, "p", 448)
+vim.fn.mkdir(undodir, "p", "448")
 vim.opt.undofile = true
 
 vim.opt.scrolloff = 10

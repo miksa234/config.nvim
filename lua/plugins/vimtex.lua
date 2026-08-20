@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 return {
   "lervag/vimtex",
   ft = { "tex", "plaintex" },

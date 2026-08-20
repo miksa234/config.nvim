@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 return {
   "neovim/nvim-lspconfig",
   dependencies = {
@@ -21,12 +20,32 @@ return {
 
     require("conform").setup({
       formatters = {
+        clang_format = {
+          prepend_args = function(_, ctx)
+            local config = vim.fs.find({ ".clang-format", "_clang-format" }, {
+              upward = true,
+              path = vim.fs.dirname(ctx.filename),
+            })[1]
+
+            if config then
+              return { "--style=file" }
+            end
+
+            return {
+              "--style={BasedOnStyle: GNU, IndentWidth: 4, UseTab: Never, ColumnLimit: 80, BreakBeforeBraces: Linux, SpaceBeforeParens: Always, IndentCaseLabels: true}",
+            }
+          end,
+        },
         latexindent = {
           prepend_args = { "-y=defaultIndent:'  '" },
         },
         rustfmt = {},
       },
       formatters_by_ft = {
+        c = { "clang_format" },
+        cpp = { "clang_format" },
+        objc = { "clang_format" },
+        objcpp = { "clang_format" },
         javascript = { "prettier" },
         javascriptreact = { "prettier" },
         typescript = { "prettier" },
@@ -85,7 +104,6 @@ return {
 
     require("fidget").setup({})
 
-
     vim.lsp.config("eslint", {
       cmd = { "vscode-eslint-language-server", "--stdio" },
       filetypes = {
@@ -130,9 +148,22 @@ return {
         Lua = {
           runtime = { version = "LuaJIT" },
           diagnostics = { globals = { "vim", "require" } },
-          workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+          workspace = {
+            checkThirdParty = false,
+            library = {
+              vim.env.VIMRUNTIME,
+              vim.api.nvim_get_runtime_file("lua/lspconfig", false)[1],
+            },
+          },
           telemetry = { enable = false },
         },
+      },
+    })
+
+    vim.lsp.config("clangd", {
+      cmd = {
+        "clangd",
+        "--query-driver=" .. vim.fn.exepath("gcc") .. "," .. vim.fn.exepath("cc"),
       },
     })
 

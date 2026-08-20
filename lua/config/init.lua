@@ -1,4 +1,6 @@
----@diagnostic disable: undefined-global
+vim.g.mapleader = " "
+vim.g.maplocalleader = ","
+
 for name, t in vim.fs.dir(vim.fn.stdpath("config") .. "/lua/config") do
   if (t == "file" or t == "link") and name:sub(-4) == ".lua" and name ~= "init.lua" then
     require("config." .. name:gsub("%.lua$", ""))

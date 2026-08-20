@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 return {
   "chrisgrieser/nvim-lsp-endhints",
   event = "VeryLazy",
@@ -8,8 +7,8 @@ return {
       icons = {
         type = "-> ",
         parameter = "<= ",
-        offspec = "<= ", -- hint kind not defined in official LSP spec
-        unknown = "? ",  -- hint kind is nil
+        offspec = "<= ",
+        unknown = "? ",
       },
       label = {
         truncateAtChars = 50,

@@ -1,4 +1,3 @@
----@diagnostic  disable:  undefined-global
 local palette = {
   err = "#51202A",
   warn = "#3B3B1B",

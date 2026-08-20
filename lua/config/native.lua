@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 -- Undotree toggle
 vim.keymap.set("n", "<leader>u", function()
   vim.cmd("packadd nvim.undotree")

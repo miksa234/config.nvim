@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 return {
   "mrcjkb/rustaceanvim",
   version = "^9",
