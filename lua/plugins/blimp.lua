@@ -1,11 +1,10 @@
----@diagnostic disable: undefined-global
+--@diagnostic disable: undefined-global
 return {
   "saghen/blink.cmp",
   event = "InsertEnter",
   version = "v1",
   dependencies = {
     "L3MON4D3/LuaSnip",
-    "fang2hou/blink-copilot"
   },
   opts = {
     keymap = {
@@ -25,25 +24,11 @@ return {
     snippets = { preset = "luasnip" },
     sources = {
       default = {
-        "copilot",
         'lsp',
         'path',
         'snippets',
         'buffer'
       },
-      providers = {
-        copilot = {
-          name = "copilot",
-          module = "blink-copilot",
-          score_offset = 100,
-          async = true,
-        }
-      }
     },
-    appearance = {
-      kind_icons = {
-        copilot = " ",
-      }
-    }
   }
 }

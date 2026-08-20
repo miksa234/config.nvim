@@ -34,7 +34,7 @@ vim.diagnostic.config({
       [sev.ERROR] = "E",
       [sev.WARN] = "W",
       [sev.INFO] = "I",
-      [sev.HINT] = "󰌵  ",
+      [sev.HINT] = "󰌵",
     },
   },
   virtual_text = {
