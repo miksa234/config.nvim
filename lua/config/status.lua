@@ -20,9 +20,12 @@ local function buf_dir(bufnr)
   return vim.fs.dirname(name)
 end
 
-local function set_git(bufnr, info)
-  if vim.api.nvim_buf_is_valid(bufnr) then
+local function set_git(bufnr, info, request, name)
+  if vim.api.nvim_buf_is_valid(bufnr)
+      and vim.b[bufnr].status_git_request == request
+      and vim.api.nvim_buf_get_name(bufnr) == name then
     vim.b[bufnr].status_git = info
+    vim.b[bufnr].status_git_pending = nil
     vim.cmd("redrawstatus")
   end
 end
@@ -81,25 +84,32 @@ function M.update_git_branch(bufnr)
   if bufnr == 0 then
     bufnr = vim.api.nvim_get_current_buf()
   end
+  local name = vim.api.nvim_buf_get_name(bufnr)
+  if vim.b[bufnr].status_git_pending == name then
+    return
+  end
+  local request = (vim.b[bufnr].status_git_request or 0) + 1
+  vim.b[bufnr].status_git_request = request
+  vim.b[bufnr].status_git_pending = name
   local dir = buf_dir(bufnr)
   if not dir then
-    return set_git(bufnr, { branch = "" })
+    return set_git(bufnr, { branch = "" }, request, name)
   end
 
   vim.system({ "git", "-C", dir, "rev-parse", "--show-toplevel" }, { text = true }, vim.schedule_wrap(function(root_result)
     local root = vim.trim(root_result.stdout or "")
     if root_result.code ~= 0 or root == "" then
-      return set_git(bufnr, { branch = "" })
+      return set_git(bufnr, { branch = "" }, request, name)
     end
 
     vim.system({ "git", "-C", root, "status", "--porcelain=2", "-b" }, { text = true }, vim.schedule_wrap(function(result)
       local info = parse_git_status(result.stdout)
       if result.code ~= 0 or info.branch == "" then
-        return set_git(bufnr, { branch = "" })
+        return set_git(bufnr, { branch = "" }, request, name)
       end
 
       info.repo = vim.fs.basename(root)
-      set_git(bufnr, info)
+      set_git(bufnr, info, request, name)
     end))
   end))
 end

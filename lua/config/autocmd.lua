@@ -1,8 +1,7 @@
 ---@diagnostic disable: undefined-global
 local autocmd = vim.api.nvim_create_autocmd
 
--- Delete trailing whitespace
-autocmd({ 'BufWritePre' }, {
+autocmd('BufWritePre', {
   pattern = '*',
   command = [[%s/\s\+$//e]],
 })

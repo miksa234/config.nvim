@@ -1,20 +1,32 @@
 ---@diagnostic disable: undefined-global
 return {
   "lervag/vimtex",
-  lazy = true,
+  ft = { "tex", "plaintex" },
+  keys = {
+    {
+      "<leader>tp",
+      "<cmd>write<CR><cmd>VimtexCompile<CR>",
+      ft = { "tex", "plaintex" },
+      desc = "Compile TeX",
+    },
+    {
+      "<leader>te",
+      "<cmd>write<CR><cmd>VimtexErrors<CR>",
+      ft = { "tex", "plaintex" },
+      desc = "TeX errors",
+    },
+  },
   init = function()
     vim.opt.conceallevel = 2
     vim.g.vimtex_view_method = "zathura"
     vim.g.latex_to_unicode_auto = 1
-    vim.g.tex_flavour = "latex"
+    vim.g.tex_flavor = "latex"
     vim.g.vimtex_compiler_latexmk = {
       executable = "latexmk",
       options = {
-        "-synctex=0",
         "-verbose",
         "-file-line-error",
         "-interaction=nonstopmode",
-        "-shell-escape",
         "-synctex=1"
       },
       out_dir = "build",
@@ -22,8 +34,5 @@ return {
     }
     vim.g.vimtex_quickfix_mode = 0
     vim.g.tex_conceal = "abdmg"
-
-    vim.keymap.set('n', '<leader>tp', "<Esc>:w<CR>:VimtexCompile<CR>")
-    vim.keymap.set('n', '<leader>te', "<Esc>:w<CR>:VimtexErrors<CR>")
   end
 }

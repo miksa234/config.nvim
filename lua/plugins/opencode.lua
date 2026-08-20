@@ -7,7 +7,7 @@ return {
       preferred_completion = "blink",
       default_mode = "router",
       server = {
-        url = localhost,
+        url = "localhost",
         port = 9999,
       },
       ui = {

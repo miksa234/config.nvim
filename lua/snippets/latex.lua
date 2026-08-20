@@ -8,7 +8,8 @@ local extras = require("luasnip.extras")
 local rep = extras.rep
 
 local function math()
-  return vim.api.nvim_eval('vimtex#syntax#in_mathzone()') == 1
+  return vim.fn.exists('*vimtex#syntax#in_mathzone') == 1
+      and vim.fn['vimtex#syntax#in_mathzone']() == 1
 end
 
 ls.add_snippets("tex", {
@@ -224,7 +225,7 @@ ls.add_snippets("tex", {
     { condition = math, show_condition = math }
   ),
   s({ trig = "lra", wordTrig = false, descr = "left< right>", snippetType = "autosnippet" },
-    fmt([[\left\langle <> \right\rangle] ]], { i(1) }, { delimiters = "<>" }),
+    fmt([[\left\langle <> \right\rangle]], { i(1) }, { delimiters = "<>" }),
     { condition = math, show_condition = math }
   ),
   s({ trig = "conj", descr = "conjugate", snippetType = "autosnippet" },
@@ -282,14 +283,6 @@ ls.add_snippets("tex", {
   s({ trig = "td", wordTrig = false, descr = "to the .. power", snippetType = "autosnippet" },
     fmt(
       [[^{<>} <>]],
-      { i(1), i(0) },
-      { delimiters = "<>" }
-    ),
-    { condition = math, show_condition = math }
-  ),
-  s({ trig = "rd", wordTrig = false, descr = "to the .. (power)", snippetType = "autosnippet" },
-    fmt(
-      [[^{(<>)} <>]],
       { i(1), i(0) },
       { delimiters = "<>" }
     ),
@@ -396,7 +389,7 @@ ls.add_snippets("tex", {
     { condition = math, show_condition = math }
   ),
   s({ trig = "arccot", wordTrig = false, descr = "fill", snippetType = "autosnippet" },
-    { t("\\arrcot") },
+    { t("\\arccot") },
     { condition = math, show_condition = math }
   ),
   s({ trig = "cot", wordTrig = false, descr = "fill", snippetType = "autosnippet" },
@@ -439,7 +432,7 @@ ls.add_snippets("tex", {
     { t("\\arccos") },
     { condition = math, show_condition = math }
   ),
-  s({ trig = "actan", wordTrig = false, descr = "fill", snippetType = "autosnippet" },
+  s({ trig = "arctan", wordTrig = false, descr = "fill", snippetType = "autosnippet" },
     { t("\\arctan") },
     { condition = math, show_condition = math }
   ),
@@ -448,7 +441,7 @@ ls.add_snippets("tex", {
     { condition = math, show_condition = math }
   ),
   s({ trig = "arccsc", wordTrig = false, descr = "fill", snippetType = "autosnippet" },
-    { t("\\arcsc") },
+    { t("\\arccsc") },
     { condition = math, show_condition = math }
   ),
   s({ trig = "dint", wordTrig = false, descr = "integral", snippetType = "autosnippet" },
@@ -548,7 +541,7 @@ ls.add_snippets("tex", {
     { condition = math, show_condition = math }
   ),
   s({ trig = "OO", wordTrig = false, descr = "emptyset", snippetType = "autosnippet" },
-    { t("\\O") },
+    { t("\\emptyset") },
     { condition = math, show_condition = math }
   ),
   s({ trig = "<!", wordTrig = false, descr = "normal", snippetType = "autosnippet" },

@@ -1,7 +1,6 @@
 --@diagnostic disable: undefined-global
 return {
   "saghen/blink.cmp",
-  event = "InsertEnter",
   version = "v1",
   dependencies = {
     "L3MON4D3/LuaSnip",

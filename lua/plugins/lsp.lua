@@ -11,53 +11,20 @@ return {
   config = function()
     local map = vim.keymap.set
 
-    local ok_blink, blink = pcall(require, "blink.cmp")
-    if ok_blink then
-      blink.setup({
-        snippets = { preset = "luasnip" },
-        sources = {
-          default = { "lsp", "path", "snippets", "buffer" },
-        },
-      })
-    end
-
     local capabilities = vim.lsp.protocol.make_client_capabilities()
+    local ok_blink, blink = pcall(require, "blink.cmp")
     if ok_blink and type(blink.get_lsp_capabilities) == "function" then
       capabilities = vim.tbl_deep_extend("force", capabilities, blink.get_lsp_capabilities())
     end
 
-    local ok_endhints, endhints = pcall(require, "lsp-endhints")
-    if ok_endhints then
-      endhints.setup({
-        icons = {
-          type = "-> ",
-          parameter = "<= ",
-          offspec = "<= ",
-          unknown = "? ",
-        },
-        label = {
-          truncateAtChars = 50,
-          padding = 1,
-          marginLeft = 0,
-          sameKindSeparator = ", ",
-        },
-        extmark = {
-          priority = 50,
-        },
-        autoEnableHints = true,
-      })
-      endhints.enable()
-    end
-
-    local lspconfig = require("lspconfig")
-    lspconfig.util.default_config.capabilities = capabilities
+    vim.lsp.config("*", { capabilities = capabilities })
 
     require("conform").setup({
       formatters = {
         latexindent = {
           prepend_args = { "-y=defaultIndent:'  '" },
         },
-        rustfmt = { },
+        rustfmt = {},
       },
       formatters_by_ft = {
         javascript = { "prettier" },
@@ -67,7 +34,7 @@ return {
         vue = { "prettier" },
         css = { "prettier" },
         scss = { "prettier" },
-        lua = { "lua_ls" },
+        lua = { lsp_format = "fallback" },
         less = { "prettier" },
         html = { "prettier" },
         json = { "prettier" },
@@ -106,7 +73,7 @@ return {
         map("n", "gq", function()
           require("conform").format({
             async = true,
-            lsp_fallback = true,
+            lsp_format = "fallback",
             timeout_ms = 5000,
           })
         end, opts)
@@ -119,79 +86,60 @@ return {
     require("fidget").setup({})
 
 
+    vim.lsp.config("eslint", {
+      cmd = { "vscode-eslint-language-server", "--stdio" },
+      filetypes = {
+        "javascript",
+        "javascriptreact",
+        "javascript.jsx",
+        "typescript",
+        "typescriptreact",
+        "typescript.tsx",
+        "vue",
+        "svelte",
+        "astro",
+        "htmlangular",
+      },
+      on_attach = function(_, bufnr)
+        vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr()"
+      end,
+      settings = { workingDirectory = { mode = "auto" } },
+    })
+
+    vim.lsp.config("bashls", {
+      cmd = { "bash-language-server", "start" },
+      filetypes = { "zsh", "bash", "sh" },
+    })
+
+    vim.lsp.config("tailwindcss", {
+      settings = {
+        tailwindCSS = {
+          includeLanguages = {
+            javascript = "javascript",
+            typescript = "typescript",
+            javascriptreact = "javascriptreact",
+            typescriptreact = "typescriptreact",
+            html = "html",
+          },
+        },
+      },
+    })
+
+    vim.lsp.config("lua_ls", {
+      settings = {
+        Lua = {
+          runtime = { version = "LuaJIT" },
+          diagnostics = { globals = { "vim", "require" } },
+          workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+          telemetry = { enable = false },
+        },
+      },
+    })
+
     require("mason").setup()
     require("mason-lspconfig").setup({
-      handlers = {
-        function(server_name)
-          if server_name == "rust_analyzer" then
-            return
-          end
-          lspconfig[server_name].setup({})
-        end,
-
-        ["eslint"] = function()
-          lspconfig.eslint.setup({
-            cmd = { "vscode-eslint-language-server", "--stdio" },
-            filetypes = {
-              "javascript",
-              "javascriptreact",
-              "javascript.jsx",
-              "typescript",
-              "typescriptreact",
-              "typescript.tsx",
-              "vue",
-              "svelte",
-              "astro",
-              "htmlangular",
-            },
-            on_attach = function(_, bufnr)
-              vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr()"
-            end,
-            settings = {
-              workingDirectory = { mode = "auto" },
-            },
-          })
-        end,
-
-        ["bashls"] = function()
-          lspconfig.bashls.setup({
-            cmd = { "bash-language-server", "start" },
-            filetypes = { "zsh", "bash", "sh" },
-          })
-        end,
-
-        ["tailwindcss"] = function()
-          lspconfig.tailwindcss.setup({
-            settings = {
-              tailwindCSS = {
-                includeLanguages = {
-                  javascript = "javascript",
-                  typescript = "typescript",
-                  javascriptreact = "javascriptreact",
-                  typescriptreact = "typescriptreact",
-                  html = "html",
-                },
-              },
-            },
-          })
-        end,
-
-        ["lua_ls"] = function()
-          lspconfig.lua_ls.setup({
-            settings = {
-              Lua = {
-                runtime = { version = "LuaJIT" },
-                diagnostics = {
-                  globals = { "vim", "require" },
-                },
-                workspace = {
-                  library = vim.api.nvim_get_runtime_file("", true),
-                },
-                telemetry = { enable = false },
-              },
-            },
-          })
-        end,
+      automatic_enable = {
+        exclude = { "rust_analyzer" },
       },
     })
   end,
