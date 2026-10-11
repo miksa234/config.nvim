@@ -1,5 +1,3 @@
-require("plugins.luasnip")
-
 vim.pack.add({
   { src = "https://github.com/saghen/blink.cmp.git", version = vim.version.range("^1") },
 })

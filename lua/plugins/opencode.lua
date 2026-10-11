@@ -1,6 +1,3 @@
-require("plugins.blimp")
-require("plugins.telescope")
-
 vim.pack.add({
   "https://github.com/MeanderingProgrammer/render-markdown.nvim.git",
   "https://github.com/sudo-tee/opencode.nvim.git",

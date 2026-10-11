@@ -1,3 +1,5 @@
+vim.pack.add({ "https://github.com/lervag/vimtex.git" })
+
 vim.opt.conceallevel = 2
 vim.g.vimtex_view_method = "zathura"
 vim.g.latex_to_unicode_auto = 1
@@ -16,7 +18,6 @@ vim.g.vimtex_compiler_latexmk = {
 vim.g.vimtex_quickfix_mode = 0
 vim.g.tex_conceal = "abdmg"
 
-vim.pack.add({ "https://github.com/lervag/vimtex.git" })
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "tex", "plaintex" },

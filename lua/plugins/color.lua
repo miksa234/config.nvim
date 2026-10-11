@@ -1,6 +1,9 @@
 vim.pack.add({
   { src = "https://github.com/rose-pine/neovim.git", name = "rose-pine" },
+  "https://github.com/brenoprata10/nvim-highlight-colors.git"
 })
+
+require("nvim-highlight-colors").setup()
 
 require("rose-pine").setup({
   dark_variant = "main",
@@ -40,7 +43,7 @@ vim.api.nvim_set_hl(0, "TelescopeTitle", { bold = true })
 
 vim.api.nvim_set_hl(0, "LspInlayHint", {
   bg = "none",
-  fg = vim.api.nvim_get_hl_by_name("NonText", true).foreground,
+  fg = vim.api.nvim_get_hl(0, { name = "NonText", link = false }).fg,
 })
 
 vim.api.nvim_set_hl(0, "NotmuchSidebarActive", {

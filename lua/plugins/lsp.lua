@@ -1,10 +1,6 @@
-require("plugins.blimp")
-
 vim.pack.add({
   "https://github.com/stevearc/conform.nvim.git",
-  "https://github.com/williamboman/mason.nvim.git",
   "https://github.com/neovim/nvim-lspconfig.git",
-  "https://github.com/williamboman/mason-lspconfig.nvim.git",
 })
 
 local map = vim.keymap.set
@@ -164,9 +160,21 @@ vim.lsp.config("clangd", {
   },
 })
 
-require("mason").setup()
-require("mason-lspconfig").setup({
-  automatic_enable = {
-    exclude = { "rust_analyzer" },
-  },
+vim.lsp.enable({
+  "bashls",
+  "clangd",
+  "docker_compose_language_service",
+  "docker_language_server",
+  "dockerls",
+  "eslint",
+  "lua_ls",
+  "marksman",
+  "nil_ls",
+  "pylsp",
+  "solidity_ls",
+  "tailwindcss",
+  "texlab",
+  "ts_ls",
+  "yamlls",
+  "zls",
 })
