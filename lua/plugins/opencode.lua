@@ -1,6 +1,6 @@
 vim.pack.add({
   "https://github.com/MeanderingProgrammer/render-markdown.nvim.git",
-  "https://github.com/sudo-tee/opencode.nvim.git",
+  { src = "https://github.com/sudo-tee/opencode.nvim.git" },
 })
 
 require("render-markdown").setup({
@@ -11,11 +11,7 @@ require("render-markdown").setup({
 require("opencode").setup({
   preferred_picker = "telescope",
   preferred_completion = "blink",
-  default_mode = "router",
-  server = {
-    url = "localhost",
-    port = 9999,
-  },
+  default_mode = "plan",
   ui = {
     position = "current",
   },
