@@ -1,7 +1,5 @@
-return {
-  "windwp/nvim-autopairs",
-  event = "InsertEnter",
-  opts = {
-    disable_filetype = { "TelescopePrompt", "vim" },
-  },
-}
+vim.pack.add({ "https://github.com/windwp/nvim-autopairs.git" })
+
+require("nvim-autopairs").setup({
+  disable_filetype = { "TelescopePrompt", "vim" },
+})

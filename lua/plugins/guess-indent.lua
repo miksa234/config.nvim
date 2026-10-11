@@ -1,6 +1,3 @@
-return {
-  'nmac427/guess-indent.nvim',
-  config = function()
-    require('guess-indent').setup()
-  end,
-}
+vim.pack.add({ "https://github.com/nmac427/guess-indent.nvim.git" })
+
+require('guess-indent').setup()
