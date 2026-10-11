@@ -1,5 +1,33 @@
 local M = {}
 
+local lsp_status = ""
+local progress_update = 0
+
+vim.api.nvim_create_autocmd("LspProgress", {
+  group = vim.api.nvim_create_augroup("StatusLspProgress", { clear = true }),
+  callback = vim.schedule_wrap(function()
+    progress_update = progress_update + 1
+    local update = progress_update
+    lsp_status = vim.lsp.status()
+    vim.cmd.redrawstatus()
+    for _, client in ipairs(vim.lsp.get_clients()) do
+      if next(client.progress.pending) then
+        return
+      end
+    end
+    vim.defer_fn(function()
+      if update == progress_update then
+        lsp_status = ""
+        vim.cmd.redrawstatus()
+      end
+    end, 1000)
+  end),
+})
+
+function M.lsp_component()
+  return lsp_status ~= "" and (lsp_status .. " ") or ""
+end
+
 local function buf_dir(bufnr)
   local bt = vim.bo[bufnr].buftype
   if bt ~= nil and bt ~= "" then
@@ -19,9 +47,11 @@ local function buf_dir(bufnr)
 end
 
 local function set_git(bufnr, info, request, name)
-  if vim.api.nvim_buf_is_valid(bufnr)
+  if
+      vim.api.nvim_buf_is_valid(bufnr)
       and vim.b[bufnr].status_git_request == request
-      and vim.api.nvim_buf_get_name(bufnr) == name then
+      and vim.api.nvim_buf_get_name(bufnr) == name
+  then
     vim.b[bufnr].status_git = info
     vim.b[bufnr].status_git_pending = nil
     vim.cmd("redrawstatus")
@@ -94,22 +124,30 @@ function M.update_git_branch(bufnr)
     return set_git(bufnr, { branch = "" }, request, name)
   end
 
-  vim.system({ "git", "-C", dir, "rev-parse", "--show-toplevel" }, { text = true }, vim.schedule_wrap(function(root_result)
-    local root = vim.trim(root_result.stdout or "")
-    if root_result.code ~= 0 or root == "" then
-      return set_git(bufnr, { branch = "" }, request, name)
-    end
-
-    vim.system({ "git", "-C", root, "status", "--porcelain=2", "-b" }, { text = true }, vim.schedule_wrap(function(result)
-      local info = parse_git_status(result.stdout)
-      if result.code ~= 0 or info.branch == "" then
+  vim.system(
+    { "git", "-C", dir, "rev-parse", "--show-toplevel" },
+    { text = true },
+    vim.schedule_wrap(function(root_result)
+      local root = vim.trim(root_result.stdout or "")
+      if root_result.code ~= 0 or root == "" then
         return set_git(bufnr, { branch = "" }, request, name)
       end
 
-      info.repo = vim.fs.basename(root)
-      set_git(bufnr, info, request, name)
-    end))
-  end))
+      vim.system(
+        { "git", "-C", root, "status", "--porcelain=2", "-b" },
+        { text = true },
+        vim.schedule_wrap(function(result)
+          local info = parse_git_status(result.stdout)
+          if result.code ~= 0 or info.branch == "" then
+            return set_git(bufnr, { branch = "" }, request, name)
+          end
+
+          info.repo = vim.fs.basename(root)
+          set_git(bufnr, info, request, name)
+        end)
+      )
+    end)
+  )
 end
 
 function M.git_component()
@@ -164,6 +202,7 @@ vim.o.statusline = table.concat({
   "%{v:lua.require'config.status'.file_component()}",
   " %m",
   "%=",
+  "%{v:lua.require'config.status'.lsp_component()}",
   "%y",
   " · ",
   "%l:%c",

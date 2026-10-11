@@ -5,7 +5,6 @@ vim.pack.add({
   "https://github.com/williamboman/mason.nvim.git",
   "https://github.com/neovim/nvim-lspconfig.git",
   "https://github.com/williamboman/mason-lspconfig.nvim.git",
-  "https://github.com/j-hui/fidget.nvim.git",
 })
 
 local map = vim.keymap.set
@@ -101,8 +100,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "<F4>", vim.lsp.buf.code_action, opts)
   end,
 })
-
-require("fidget").setup({})
 
 vim.lsp.config("eslint", {
   cmd = { "vscode-eslint-language-server", "--stdio" },

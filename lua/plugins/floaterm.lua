@@ -1,5 +1,0 @@
-vim.pack.add({ "https://github.com/voldikss/vim-floaterm.git" })
-
-vim.keymap.set("n", "<leader>ft", ":FloatermNew --name=myfloat --height=0.8 --width=0.8 --autoclose=2 zsh<CR> ")
-vim.keymap.set("n", "<leader>tt", ":FloatermToggle myfloat<CR>", { desc = "Toggle terminal" })
-vim.keymap.set("t", "<C-t>", "<C-\\><C-n>:q<CR>")
