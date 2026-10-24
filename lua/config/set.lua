@@ -1,0 +1,43 @@
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.g.show_whitespace = 1
+vim.g.loaded_perl_provider = false
+vim.opt.termguicolors = true
+vim.o.winborder = "single"
+
+vim.opt.clipboard = "unnamedplus"
+
+vim.opt.textwidth = 80
+vim.opt.wrap = true
+
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+vim.opt.shiftwidth = 0
+vim.opt.softtabstop = -1
+vim.opt.tabstop = 4
+vim.opt.smartindent = true
+vim.opt.expandtab = true
+
+vim.opt.shadafile = vim.fn.stdpath("state") .. "/shada/main.shada"
+local undodir = vim.fn.stdpath("state") .. "/undo"
+vim.opt.undodir = undodir
+vim.fn.mkdir(undodir, "p", "448")
+vim.opt.undofile = true
+
+vim.opt.scrolloff = 10
+vim.opt.hlsearch = false
+
+vim.opt.ttimeoutlen = 0
+vim.opt.timeoutlen = 1000
+
+vim.opt.mouse = ""
+vim.opt.mousescroll = "ver:0,hor:0"
+vim.opt.wildmode = "longest,list,full"
+vim.opt.signcolumn = "yes"
+vim.opt.isfname:append("@-@")
+
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+
+vim.opt.spellsuggest = { "best", 5 }
